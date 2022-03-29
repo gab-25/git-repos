@@ -1,10 +1,11 @@
 import sys
-import subprocess
 import os
+from cmds import Cmd, Cmds
+from colorama import Fore
 
 
 def help():
-    str_help = "USAGE: git-repos [options]\n\n" \
+    str_help = "USAGE: git-repos [option] [path]\n\n" \
                "OPTIONS:\n" \
                "--help show usage tool\n" \
                "--status launch git status in folders\n" \
@@ -14,18 +15,37 @@ def help():
     print(str_help)
 
 
-def list():
-    folder = os.path.basename(os.getcwd())
-    branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip("\n")
-    print(folder, "[%s]" % branch)
-
-
 def main(argv: list):
-    if "--help" in argv:
+    if Cmd.help.value in argv or len(argv) == 1:
         help()
         return
 
-    list()
+    cwd = os.getcwd()
+    if len(argv) > 2 and argv[2] is not None:
+        cwd = argv[2]
+
+    count_folder_git = 0
+    for folder in os.listdir(cwd):
+        path_folder = os.path.join(cwd, folder)
+
+        if os.path.isdir(path_folder) and ".git" in os.listdir(path_folder):
+            count_folder_git += 1
+            cmds = Cmds(path_folder)
+
+            if Cmd.status.value == argv[1]:
+                cmds.status()
+
+            if Cmd.fetch.value == argv[1]:
+                cmds.fetch()
+
+            if Cmd.pull.value == argv[1]:
+                cmds.pull()
+
+            if Cmd.push.value == argv[1]:
+                cmds.push()
+
+    if count_folder_git == 0:
+        print(Fore.RED + "No git repository in target folder: %s" % cwd)
 
 
 if __name__ == "__main__":
