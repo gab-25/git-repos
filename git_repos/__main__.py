@@ -1,7 +1,7 @@
 import sys
 import os
 from colorama import Fore
-from cmds import Cmd, Cmds
+from .cmds import Cmd, Cmds
 
 
 def help():
@@ -40,7 +40,7 @@ def main(argv: list = None):
             return
 
     results = []
-    for folder in os.listdir(cwd):
+    for folder in sorted(os.listdir(cwd)):
         path_folder = os.path.join(cwd, folder)
 
         if os.path.isdir(path_folder) and ".git" in os.listdir(path_folder):
