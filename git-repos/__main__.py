@@ -1,7 +1,7 @@
 import sys
 import os
-from cmds import Cmd, Cmds
 from colorama import Fore
+from cmds import Cmd, Cmds
 
 
 def help():
@@ -23,7 +23,10 @@ def __check_cmd_in_argv(argv: list) -> bool:
     return False
 
 
-def main(argv: list):
+def main(argv: list = None):
+    if argv is None:
+        argv = sys.argv
+
     if Cmd.help.value in argv or not __check_cmd_in_argv(argv):
         help()
         return
@@ -31,6 +34,10 @@ def main(argv: list):
     cwd = os.getcwd()
     if len(argv) > 2 and argv[2] is not None:
         cwd = os.path.expanduser(argv[2])
+
+        if not os.path.exists(cwd):
+            print(Fore.RED + "No exist directory: %s" % cwd)
+            return
 
     results = []
     for folder in os.listdir(cwd):
@@ -64,4 +71,4 @@ def main(argv: list):
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()
