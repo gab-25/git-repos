@@ -15,37 +15,52 @@ def help():
     print(str_help)
 
 
+def __check_cmd_in_argv(argv: list) -> bool:
+    for cmd in Cmd:
+        if cmd.value in argv:
+            return True
+
+    return False
+
+
 def main(argv: list):
-    if Cmd.help.value in argv or len(argv) == 1:
+    if Cmd.help.value in argv or not __check_cmd_in_argv(argv):
         help()
         return
 
     cwd = os.getcwd()
     if len(argv) > 2 and argv[2] is not None:
-        cwd = argv[2]
+        cwd = os.path.expanduser(argv[2])
 
-    count_folder_git = 0
+    results = []
     for folder in os.listdir(cwd):
         path_folder = os.path.join(cwd, folder)
 
         if os.path.isdir(path_folder) and ".git" in os.listdir(path_folder):
-            count_folder_git += 1
             cmds = Cmds(path_folder)
 
             if Cmd.status.value == argv[1]:
-                cmds.status()
+                res = cmds.status()
+                results.append(res)
 
             if Cmd.fetch.value == argv[1]:
-                cmds.fetch()
+                res = cmds.fetch()
+                results.append(res)
 
             if Cmd.pull.value == argv[1]:
-                cmds.pull()
+                res = cmds.pull()
+                results.append(res)
 
             if Cmd.push.value == argv[1]:
-                cmds.push()
+                res = cmds.push()
+                results.append(res)
 
-    if count_folder_git == 0:
+    if len(results) == 0:
         print(Fore.RED + "No git repository in target folder: %s" % cwd)
+    else:
+        print(Fore.YELLOW + ("Result folders".upper()))
+        for result in results:
+            print(result)
 
 
 if __name__ == "__main__":
