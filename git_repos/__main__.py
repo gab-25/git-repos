@@ -5,13 +5,13 @@ from .cmds import Cmd, Cmds
 
 
 def help():
-    str_help = "USAGE: git-repos [option] [path]\n\n" \
-               "OPTIONS:\n" \
+    str_help = "USAGE: git-repos [command] [path]\n\n" \
+               "COMMANDS:\n" \
                "--help show usage tool\n" \
-               "--status launch git status in folders\n" \
-               "--fetch launch git fetch in folders\n" \
-               "--pull launch git pull in folders\n" \
-               "--push launch git push in folders"
+               "status launch git status in folders\n" \
+               "fetch launch git fetch in folders\n" \
+               "pull launch git pull in folders\n" \
+               "push launch git push in folders"
     print(str_help)
 
 
