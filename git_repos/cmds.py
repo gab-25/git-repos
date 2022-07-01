@@ -45,13 +45,17 @@ class Cmds:
         return self.__result_str()
 
     def __print_folder(self):
-        print(Fore.YELLOW + self.folder.upper())
+        branch = self.__get_branch()
+        print(f"{Fore.YELLOW + self.folder.upper()} [{branch}]")
 
     def __result_str(self) -> str:
         status = subprocess.run(["git", "status"], capture_output=True, text=True, cwd=self.path).stdout.strip("\n").split('\n')[1]
-        branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True, cwd=self.path).stdout.strip("\n")
+        branch = self.__get_branch()
         if "Your branch is up to date" in status:
             branch = f"{Fore.GREEN}[{branch}]"
         else:
             branch = f"{Fore.RED}[{branch}]"
         return f"{Fore.LIGHTWHITE_EX + self.folder} {branch}{Fore.LIGHTWHITE_EX}: {status}"
+
+    def __get_branch(self) -> str:
+        return subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True, cwd=self.path).stdout.strip("\n")

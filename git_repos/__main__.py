@@ -65,7 +65,7 @@ def main(argv: list = None):
     if len(results) == 0:
         print(Fore.RED + "No git repository in target folder: %s" % cwd)
     else:
-        print(Fore.YELLOW + ("Result folders".upper()))
+        print(Fore.LIGHTYELLOW_EX + ("Result folders".upper()))
         for result in results:
             print(result)
 
