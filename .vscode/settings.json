@@ -1,0 +1,12 @@
+{
+    "python.testing.pytestEnabled": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "files.insertFinalNewline": true,
+    "python.linting.pylintArgs": [
+        "--max-line-length=127"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+}

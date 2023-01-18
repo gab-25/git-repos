@@ -27,7 +27,7 @@ def main(argv: list = None):
     if argv is None:
         argv = sys.argv
 
-    if Cmd.help.value in argv or not __check_cmd_in_argv(argv):
+    if Cmd.HELP.value in argv or not __check_cmd_in_argv(argv):
         help()
         return
 
@@ -36,7 +36,7 @@ def main(argv: list = None):
         cwd = os.path.expanduser(argv[2])
 
         if not os.path.exists(cwd):
-            print(Fore.RED + "No exist directory: %s" % cwd)
+            print(Fore.RED + f"No exist directory: {cwd}")
             return
 
     results = []
@@ -46,24 +46,24 @@ def main(argv: list = None):
         if os.path.isdir(path_folder) and ".git" in os.listdir(path_folder):
             cmds = Cmds(path_folder)
 
-            if Cmd.status.value == argv[1]:
+            if Cmd.STATUS.value == argv[1]:
                 res = cmds.status()
                 results.append(res)
 
-            if Cmd.fetch.value == argv[1]:
+            if Cmd.FETCH.value == argv[1]:
                 res = cmds.fetch()
                 results.append(res)
 
-            if Cmd.pull.value == argv[1]:
+            if Cmd.PULL.value == argv[1]:
                 res = cmds.pull()
                 results.append(res)
 
-            if Cmd.push.value == argv[1]:
+            if Cmd.PUSH.value == argv[1]:
                 res = cmds.push()
                 results.append(res)
 
     if len(results) == 0:
-        print(Fore.RED + "No git repository in target folder: %s" % cwd)
+        print(Fore.RED + f"No git repository in target folder: {cwd}")
     else:
         print(Fore.LIGHTYELLOW_EX + ("Result folders".upper()))
         for result in results:
